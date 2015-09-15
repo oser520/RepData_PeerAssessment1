@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 
 ## Loading and preprocessing the data
@@ -26,7 +31,7 @@ hist(totalSteps, main='Total Steps', ylab='Days with Frequency', xlab='Total Ste
 		 col='blue')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
 
 ```r
 mean(totalSteps)
@@ -55,7 +60,7 @@ plot(uniqTime, avgSteps, type='l', col='red', xlab='Time Interval', ylab='Avg St
 title('Average Number of Steps per Time Interval')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 The interval with the maximum average number of steps across all days is:
 
@@ -116,7 +121,7 @@ hist(totalSteps2, main='Total Steps with NAs Filled In', ylab='Days with Frequen
      xlab='Total Steps', col='blue')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
 Calculate the mean and median of the total number of steps per day with the new data set.
 
@@ -176,7 +181,7 @@ plot(uniqTime2, avgStepsWeekend, type='l', col='blue', ylab='Avg Steps',
 		 xlab='Time Interval', main='Weekend', ylim=c(0,230))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
 ```r
 par(savePar)
