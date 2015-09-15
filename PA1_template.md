@@ -1,13 +1,9 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r, echo=TRUE}
+
+```r
 if (!file.exists('activity.csv')) {
 	if (file.exists('activity.zip')) {
 		unzip('activity.zip')
@@ -21,30 +17,55 @@ df <- read.csv('activity.csv', colClasses=c('numeric', 'Date', 'numeric'))
 
 
 ## What is mean total number of steps taken per day?
-```{r, echo=TRUE}
+
+```r
 dfComplete <- df[complete.cases(df),]
 uniqDate <- unique(dfComplete$date)
 totalSteps <- sapply(split(dfComplete, uniqDate), function(x) sum(x$steps))
 hist(totalSteps, main='Total Steps', ylab='Days with Frequency', xlab='Total Steps',
 		 col='blue')
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+```r
 mean(totalSteps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(totalSteps)
+```
+
+```
+## [1] 10489
 ```
 
 
 
 ## What is the average daily activity pattern?
-```{r, echo=TRUE}
+
+```r
 uniqTime <- unique(dfComplete$interval)
 avgSteps <- sapply(split(dfComplete, uniqTime), function(x) mean(x$steps))
 plot(uniqTime, avgSteps, type='l', col='red', xlab='Time Interval', ylab='Avg Steps')
 title('Average Number of Steps per Time Interval')
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 The interval with the maximum average number of steps across all days is:
 
-```{r, echo=TRUE}
+
+```r
 uniqTime[avgSteps == max(avgSteps)]
+```
+
+```
+## [1] 835
 ```
 
 
@@ -52,14 +73,20 @@ uniqTime[avgSteps == max(avgSteps)]
 ## Imputing missing values
 The total number of cases with missing values is:
 
-```{r, echo=TRUE}
+
+```r
 nrow(df) - nrow(dfComplete)
+```
+
+```
+## [1] 2304
 ```
 
 Create new data set by filling in the missing values with the average number of steps
 per time interval.
 
-```{r, echo=TRUE}
+
+```r
 dfFillIn <- df
 for (i in 1:nrow(df)) {
 	if (is.na(df$steps[i])) {
@@ -70,24 +97,44 @@ for (i in 1:nrow(df)) {
 
 Sanity check to verify that new data set doesn't have any missing values.
 
-```{r, echo=TRUE}
+
+```r
 any(is.na(dfFillIn$steps))
+```
+
+```
+## [1] FALSE
 ```
 
 Create a histogram of the total number of steps per day with the new data set.
 
-```{r, echo=TRUE}
+
+```r
 uniqDate2 <- unique(dfFillIn$date)
 totalSteps2 <- sapply(split(dfFillIn, uniqDate2), function(x) sum(x$steps))
 hist(totalSteps2, main='Total Steps with NAs Filled In', ylab='Days with Frequency',
      xlab='Total Steps', col='blue')
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+
 Calculate the mean and median of the total number of steps per day with the new data set.
 
-```{r, echo=TRUE}
+
+```r
 mean(totalSteps2)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(totalSteps2)
+```
+
+```
+## [1] 10789
 ```
 
 The mean is not different, but the median is. Seems surprising that the mean is different,
@@ -100,14 +147,16 @@ from the data set with missing values.
 Create factor variable that indicates if observation was made during the week or on the
 weekend. 
 
-```{r, echo=TRUE}
+
+```r
 dfFillIn$wkday <- factor(ifelse(weekdays(dfFillIn$date) %in% c('Saturday', 'Sunday'),
 										       'weekend', 'weekday'))
 ```
 
 Get the average number of steps per time interval for weekdays and weekends.
 
-```{r, echo=TRUE}
+
+```r
 splitOnDay <- split(dfFillIn, dfFillIn$wkday)
 uniqTime2 <- unique(dfFillIn$interval)
 f <- function(x) mean(x$steps)
@@ -118,12 +167,18 @@ avgStepsWeekend <- sapply(split(splitOnDay$weekend, uniqTime2), f)
 Create a panel plot to compare the average number of steps per timer interval on weekends
 and weekdays.
 
-```{r, echo=TRUE}
+
+```r
 savePar <- par(mfrow=c(2,1))
 plot(uniqTime2, avgStepsWeekday, type='l', col='red', ylab='Avg Steps',
 		 xlab='Time Interval', main='Weekday', ylim=c(0,230))
 plot(uniqTime2, avgStepsWeekend, type='l', col='blue', ylab='Avg Steps',
 		 xlab='Time Interval', main='Weekend', ylim=c(0,230))
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+
+```r
 par(savePar)
 ```
 
